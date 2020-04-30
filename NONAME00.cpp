@@ -43,7 +43,10 @@ class Timer {
 #define STBTS2 __builtin_popcountll
 #define CLRLZ2 __builtin_clzll
 #define CLRTZ2 __builtin_ctzll
-// bool ispow2( auto )
+#define IS2PWR(x) ( x && !(x&(x-1)) )
+// Case changers
+#define UPPR(c) ((char)(c&'_'))
+#define LOWR(c) ((char)(c|' '))
 
 // STL containers
 #define pb push_back
@@ -108,6 +111,30 @@ TEMPL(T) int components( UMAP< T ,vector<T> > graph ) {
     return components ;
 }
 
+// bitwise algos
+TEMPL(T) auto bitrmvR( T val, int i ) {
+    T z=1 ;
+    T mask = ~((z<<(i+1)) - 1 ) ;
+    return mask&val ;}
+TEMPL(T) /*INCOMPLETE*/ auto bitrmvL( T val, int i ) { 
+    T z=1 ;
+    T mask = ~((z<<(i+1)) - 1 ) ;
+    return mask&val ;}
+TEMPL(T) auto log2( T val ) { 
+    int cnt = 0;
+    while ( val>>=1 ) ++cnt ;
+    return cnt ;}
+TEMPL(T) auto msb( T val ) { 
+    val |= val>>1 ;
+    val |= val>>2 ;
+    val |= val>>4 ;
+    val |= val>>8 ;
+    val |= val>>16 ;
+    val |= val>>32 ;
+    ++val;
+    return val>>1 ; 
+}
+
 // set union, intersection, difference, symmetric difference
 TEMPL(T) auto inline set_union( vector<T> v1, vector<T> v2 ) {
     vector<T> res(max(LENV(v1),LENV(v2))) ;
@@ -126,6 +153,8 @@ TEMPL(T) auto inline set_symdif( vector<T> v1, vector<T> v2 ) {
     res = vector<T> ( res.begin(), set_union(ALLV(v1),ALLV(v2), res.begin()) ) ;
     return res;
 }
+
+// Math Functions
 
 // min max, input, output
 TEMPL(T)        T min( const T args, ...) {
@@ -188,22 +217,30 @@ int32_t main(int argc, char** argv) {
     int n, m ;
     innum(n) ; innum(m) ; 
 
-    vll v1(n), v2(n) ;
-    FORAR(i,v1) input(i) ;
-    FORAR(i,v2) input(i) ;
-    vll inter = set_inter(v1,v2) ;
-    vll uni = set_union(v1,v2) ;
-    vll diff = set_diff(v1,v2) ;
-    vll sym_diff = set_symdif(v1,v2) ;
+    print(msb(n), msb(m)) ;
 
-    // print("Intersection\n") ;
-    FORA(i,inter) DBG(i), ENDL ;
-    // print("\n\nUnion\n") ;
-    FORA(i,uni) DBG(i), ENDL ;
-    // print("\n\nDifference\n") ;
-    FORA(i,diff) DBG(i), ENDL ;
-    // print("\n\nSymm Diff\n") ;
-    FORA(i,sym_diff) DBG(i), ENDL ;
+    // char c,d ;
+    // input(c,d) ;
+    // print(UPPR(c),LOWR(d)) ;
+
+
+    // vll v1(n), v2(n) ;
+    // FORAR(i,v1) input(i) ;
+    // FORAR(i,v2) input(i) ;
+    
+    // vll inter = set_inter(v1,v2) ;
+    // vll uni = set_union(v1,v2) ;
+    // vll diff = set_diff(v1,v2) ;
+    // vll sym_diff = set_symdif(v1,v2) ;
+
+    // // print("Intersection\n") ;
+    // FORA(i,inter) DBG(i), ENDL ;
+    // // print("\n\nUnion\n") ;
+    // FORA(i,uni) DBG(i), ENDL ;
+    // // print("\n\nDifference\n") ;
+    // FORA(i,diff) DBG(i), ENDL ;
+    // // print("\n\nSymm Diff\n") ;
+    // FORA(i,sym_diff) DBG(i), ENDL ;
 
 
     // int n;
