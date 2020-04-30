@@ -5,8 +5,9 @@
 
 #include <bits/stdc++.h>
 // #pragma GCC target ("sse4.2")
-#include <ext/pb_ds/assoc_container.hpp>
-using namespace __gnu_pbds;
+// #include <ext/pb_ds/assoc_container.hpp>
+// #include <ext/pb_ds/tree_policy.hpp>
+// using namespace __gnu_pbds;
 using namespace std;
 #ifndef ONLINE_JUDGE 
 class Timer { 
@@ -82,26 +83,48 @@ using vpll = vector<pll> ;
 using vvll = vector<vll> ;
 using vs = vector<string> ;
 
-using pbds = tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update>;
+// using pbds = tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update>;
 
 constexpr auto M7 = 1000000007 ;
 constexpr auto M9 = 998244353 ;
 
 // graph algos
-TEMPL(T) void dfs( UMPA<T,vector<T> > graph, UMAP<T,bool> &vis, T val ) {
+TEMPL(T) void dfs( UMAP<T,vector<T> > graph, UMAP<T,bool> &vis, T val ) {
     if ( vis[val] )
         return ;
     vis[val] = true ;
-    FOR(i,grapg[val]) {
+    FORA(i,graph[val]) {
         dfs(graph,vis,i) ;
     }}
-TEMPL(T) int cycles( UMAP<T,vector<T> > graph ) {
-    int cycles = 0 ;
+TEMPL(T) int components( UMAP< T ,vector<T> > graph ) {
+    int components = 0 ;
     UMAP<T, bool> vis;
     FORA(i,graph) {
-        
-        ++cycles
+        if ( vis[i] ) continue ;
+        vis[i] = true ;
+        dfs(graph,vis,i) ;
+        ++components ;
     }
+    return components ;
+}
+
+// set union, intersection, difference, symmetric difference
+TEMPL(T) auto inline set_union( vector<T> v1, vector<T> v2 ) {
+    vector<T> res(max(LENV(v1),LENV(v2))) ;
+    res = vector<T> ( res.begin(), set_union(ALLV(v1),ALLV(v2), res.begin()) ) ;
+    return res;}
+TEMPL(T) auto inline set_inter( vector<T> v1, vector<T> v2 ) {
+    vector<T> res(max(LENV(v1),LENV(v2))) ;
+    res = vector<T> ( res.begin(), set_intersection(ALLV(v1),ALLV(v2), res.begin()) ) ;
+    return res;}
+TEMPL(T) auto inline set_diff( vector<T> v1, vector<T> v2 ) {
+    vector<T> res(max(LENV(v1),LENV(v2))) ;
+    res = vector<T> ( res.begin(), set_difference(ALLV(v1),ALLV(v2), res.begin()) ) ;
+    return res;}
+TEMPL(T) auto inline set_symdif( vector<T> v1, vector<T> v2 ) {
+    vector<T> res(max(LENV(v1),LENV(v2))) ;
+    res = vector<T> ( res.begin(), set_union(ALLV(v1),ALLV(v2), res.begin()) ) ;
+    return res;
 }
 
 // min max, input, output
@@ -161,54 +184,65 @@ int32_t main(int argc, char** argv) {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr) ; cout.tie(nullptr) ;
 
-    // TIME("main") {
-
-    int t=1 ;
-    // innum(t) ;
     
-    while( t-- ) {
-        
-        int n=6 ;
-        
-        // tknum<int>(n) ;
-        // vll v(n) ;
-        // FOR(i,0,LENV(v),1) tknum<int>(v[i]) ;
-        // 0.00386131s
+    int n, m ;
+    innum(n) ; innum(m) ; 
 
-        // innum(n) ;
-        // vll v(n) ;
-        // FOR(i,0,LENV(v),1) innum(v[i]) ;
-        //0.00112186s
+    vll v1(n), v2(n) ;
+    FORAR(i,v1) input(i) ;
+    FORAR(i,v2) input(i) ;
+    vll inter = set_inter(v1,v2) ;
+    vll uni = set_union(v1,v2) ;
+    vll diff = set_diff(v1,v2) ;
+    vll sym_diff = set_symdif(v1,v2) ;
 
-        // FOR(i,0,n,1) DBGG(v,i), ENDL ;
-        // FOR(i,0,n,1) DBG1(v,i1), ENDL ;
-
-        // ll arr[n] ;
-        // FOR(i,0,n,1) arr[i] = v[i] ;
-        // PRESUMA(arr) ;
-        // FOR(i,0,n,1) DBG1(arr,i), ENDL ;
-
-        // cout << (SUMV(v,ll)) << endl ;
-        // cout << (PROV(v,ll)) << endl ;
-
-        // 2d matrix input and output
-        // vvll mat(n,vll(n)) ;
-        // FOR2(i,0,n,1,j,0,n,1) mat[i][j] = i*n+j ; } }
-
-        // FOR2(i,0,n,1,j,0,n,1) 
-        //     // DBG(i) ; DBG(j) ;
-        //     cout << i << "," << j << "  ";}
-        //     cout << "\n" ;
-        // }
-
-        // print( "Min = ", min(5, 1,2,3,4,5) ) ;
-
-        // int arr[] = {1,2,3,4,5} ;
-        // cout << SUMV(v)+1 << endl ;
+    // print("Intersection\n") ;
+    FORA(i,inter) DBG(i), ENDL ;
+    // print("\n\nUnion\n") ;
+    FORA(i,uni) DBG(i), ENDL ;
+    // print("\n\nDifference\n") ;
+    FORA(i,diff) DBG(i), ENDL ;
+    // print("\n\nSymm Diff\n") ;
+    FORA(i,sym_diff) DBG(i), ENDL ;
 
 
+    // int n;
+    // tknum<int>(n) ;
+    // vll v(n) ;
+    // FOR(i,0,LENV(v),1) tknum<int>(v[i]) ;
+    // 0.00386131s
 
-    }
+    // innum(n) ;
+    // vll v(n) ;
+    // FOR(i,0,LENV(v),1) innum(v[i]) ;
+    //0.00112186s
+
+    // FOR(i,0,n,1) DBGG(v,i), ENDL ;
+    // FOR(i,0,n,1) DBG1(v,i1), ENDL ;
+
+    // ll arr[n] ;
+    // FOR(i,0,n,1) arr[i] = v[i] ;
+    // PRESUMA(arr) ;
+    // FOR(i,0,n,1) DBG1(arr,i), ENDL ;
+
+    // cout << (SUMV(v,ll)) << endl ;
+    // cout << (PROV(v,ll)) << endl ;
+
+    // 2d matrix input and output
+    // vvll mat(n,vll(n)) ;
+    // FOR2(i,0,n,1,j,0,n,1) mat[i][j] = i*n+j ; } }
+
+    // FOR2(i,0,n,1,j,0,n,1) 
+    //     // DBG(i) ; DBG(j) ;
+    //     cout << i << "," << j << "  ";}
+    //     cout << "\n" ;
+    // }
+
+    // print( "Min = ", min(5, 1,2,3,4,5) ) ;
+
+    // int arr[] = {1,2,3,4,5} ;
+    // cout << SUMV(v)+1 << endl ;
+
 
     // pair p{1,3} ;
     // auto [x, y] = p  ;  
@@ -229,8 +263,6 @@ int32_t main(int argc, char** argv) {
 
     // int arr[] = {1,2,3,4,5} ;
     // cout << LEN(arr) << endl ;
-
-    // }
 
     return 0 ;   
 
