@@ -4,10 +4,10 @@
 // Question
 
 #include <bits/stdc++.h>
-// #pragma GCC target ("sse4.2")
-// #include <ext/pb_ds/assoc_container.hpp>
-// #include <ext/pb_ds/tree_policy.hpp>
-// using namespace __gnu_pbds;
+#pragma GCC target ("sse4.2")
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
 using namespace std;
 #ifndef ONLINE_JUDGE 
 class Timer { 
@@ -21,7 +21,8 @@ class Timer {
 #define TEMPLARGS(Args) template<typename... Args>
 #define LEN(x) (sizeof(x)/sizeof(x[0]))
 #define ALLA(x) x, x + (sizeof(x)/sizeof(x[0]))
-#define ENDL cout << endl
+#define NEWL cout << '\n'
+#define FLUSH cout << endl
 #define DBG(x) cout << "| " << #x << " : " << x << ' '
 #define DBG1(n,j) cout << "| " << #n << "[" << j << "] = " << n[j] << ' '
 #define DBG2(n,x,y) cout << "| " << #n <<  "[" << x << "][" << y << "] = " << n[x][y] << ' '
@@ -61,6 +62,8 @@ class Timer {
 #define USET unordered_set
 #define MAP map
 #define SET set
+#define MAXHEAP(t) priority_queue<t>
+#define MINHEAP(t) priority_queue<t, vector<t>, greater<t> >
 
 // AlGOS
 #define SORTV(v) sort(ALLV(v)) 
@@ -75,7 +78,8 @@ class Timer {
 #define PREPROV(v) partial_sum(ALLV(v), v.begin(), multiplies< __typeof(*v.begin()) >())
 #define PRESUMA(v) partial_sum(ALLA(v),v)
 #define PREPROA(v) partial_sum(ALLA(v), v, multiplies< __typeof(*v.begin()) >())
-#define SWAP(x,y) tie(x,y) = mt(y,x)
+#define SWAP(x,y) tie(x,y) = mt(y,x) 
+#define SWAPB(x,y) ; x^=y ; y^=x ; x^= y 
 //Lambdas
 
 using ll = long long ;
@@ -108,7 +112,22 @@ TEMPL(T) int components( UMAP< T ,vector<T> > graph ) {
         dfs(graph,vis,i) ;
         ++components ;
     }
-    return components ;
+    return components ;}
+TEMPL(T) auto bfs( UMAP<T, vector<T> > graph, T val ) {
+    queue<T> q ;
+    UMAP<T,bool> vis ;
+    q.push(val);
+    vis[val] = true ;
+    while( !q.empty() ) {
+        T fr = q.front() ; q.pop() ;
+        FORA(i,graph[fr]) {
+            if ( vis[i] ) continue ;
+            vis[i] = true ;
+            q.push(i) ;
+        }
+    }}
+TEMPL(T) auto dijikstra(  UMAP<T,vector<T> > graph, T val) {
+
 }
 
 // bitwise algos
@@ -214,10 +233,10 @@ int32_t main(int argc, char** argv) {
     cin.tie(nullptr) ; cout.tie(nullptr) ;
 
     
-    int n, m ;
-    innum(n) ; innum(m) ; 
+    // int n, m ;
+    // innum(n) ; innum(m) ; 
 
-    print(msb(n), msb(m)) ;
+    // print(msb(n), msb(m)) ;
 
     // char c,d ;
     // input(c,d) ;
