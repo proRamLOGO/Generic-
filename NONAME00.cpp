@@ -5,13 +5,13 @@
 
 #include <bits/stdc++.h>
 #pragma GCC target ("sse4.2")
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-using namespace __gnu_pbds;
+// #include <ext/pb_ds/assoc_container.hpp>
+// #include <ext/pb_ds/tree_policy.hpp>
+// using namespace __gnu_pbds;
 using namespace std;
 #ifndef ONLINE_JUDGE 
 class Timer { 
-    private: chrono::time_point <chrono::steady_clock> Begin, End; public: Timer () : Begin(), End (){ Begin = chrono::steady_clock::now(); } ~Timer () { End = chrono::steady_clock::now(); cout << "\nDuration: " << ((chrono::duration <double>)(End - Begin)).count() << "s\n"; } } T;
+    private: chrono::time_point <chrono::steady_clock> Begin, End; public: Timer () : Begin(), End (){ Begin = chrono::steady_clock::now(); } ~Timer () { End = chrono::steady_clock::now(); cerr << "\nDuration: " << ((chrono::duration <double>)(End - Begin)).count() << "s\n"; } } T;
 #endif    
 #if __cplusplus > 199711L
 #define register      
@@ -173,7 +173,18 @@ TEMPL(T) auto inline set_symdif( vector<T> v1, vector<T> v2 ) {
     return res;
 }
 
-// Math Functions
+// Math Functions and ALgos
+TEMPL(T) auto kadane( vector<T> &v ) {
+    T me = *max_element(ALLV(v)) ;
+    if ( me < 0 ) return me ;
+    T ms = INT32_MIN, cs = 0 ;
+    for ( auto i : v ) {
+        cs += i;
+        ms = max(ms,cs) ;
+        cs = max(cs,0) ;
+    }
+    return ms ;
+}
 
 // min max, input, output
 TEMPL(T)        T min( const T args, ...) {
@@ -215,6 +226,14 @@ TEMPL(T)        void innum(T &number) {
     if (negative) 
         number *= -1; } 
 
+TEMPL(T) istream &operator>>(istream &in, vector<T> &v) {
+    for ( auto &i : v ) cin >> i ;
+    return in; }
+
+TEMPL(T) ostream &operator<<(ostream &out, vector<T> v) {
+    for ( auto &i : v ) cout << i << ' ' ;
+    return out;
+}
 TEMPLARGS(Args) void input(Args&... args){
     ((cin >> args), ...);}
 
@@ -235,6 +254,13 @@ int32_t main(int argc, char** argv) {
     
     // int n, m ;
     // innum(n) ; innum(m) ; 
+
+    int n ;
+    input(n) ;
+    vll v(n) ;
+    input(v) ;
+    print(v) ;
+    FLUSH;
 
     // print(msb(n), msb(m)) ;
 
